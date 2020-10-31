@@ -1,5 +1,3 @@
-import Home from "../pages";
-
 const HomeData = (lang) => {
     if (lang === 'es') {
         return HOME_ES()
@@ -17,9 +15,9 @@ const HOME_EN = () => {
         query: '',
         mainSection: {
             title: 'Welcome to my World!',
-            subtitle: 'Here we do possible the impossible'
+            subtitle: 'Here we do possible the impossible',
+            p: 'Fugiat veniam quis amet sint duis nulla duis dolor occaecat labore eu cupidatat'
         }
-
     }
 }
 
@@ -28,7 +26,8 @@ const HOME_ES = () => {
         query: '?lang=es',
         mainSection: {
             title: '¡Bienvenido a mi mundo!',
-            subtitle: 'Aqui hacemos posible lo imposible'
+            subtitle: 'Aqui hacemos posible lo imposible',
+            p: 'Fugiat veniam quis amet sint duis nulla duis dolor occaecat labore eu cupidatat'
         }
     }
 }

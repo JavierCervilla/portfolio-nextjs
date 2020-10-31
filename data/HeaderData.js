@@ -20,7 +20,7 @@ const HOME_EN = () => {
             },
             {
                 name: 'Projects',
-                href: '/projects'
+                href: '/project'
             },
             {
                 name: 'Contact',
@@ -40,7 +40,7 @@ const HOME_ES = () => {
             },
             {
                 name: 'Proyectos',
-                href: '/projects'
+                href: '/project'
             },
             {
                 name: 'Contact',

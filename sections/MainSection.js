@@ -1,11 +1,14 @@
+import { Jumbotron } from "react-bootstrap"
 
 const MainSection = ({ data }) => {
 
+
     return (
-        <section className='main-section'>
-            <h2>{data.title}</h2>
+        <Jumbotron className='main-section' >
+            <h2 className='resalt'>{data.title}</h2>
             <h4>{data.subtitle}</h4>
-        </section>
+            <p>{data.p}</p>
+        </Jumbotron>
     )
 }
 
