@@ -12,6 +12,11 @@ import MainSection from '../sections/MainSection'
 import ProjectSection from '../sections/ProjectSection'
 import FooterSection from '../sections/FooterSection'
 
+// GIT
+
+import sys from 'sys'
+import { exec } from 'child_process'
+
 export default function Home({ headerData, data, projectsData }) {
   return (
     <div>
@@ -30,11 +35,24 @@ export default function Home({ headerData, data, projectsData }) {
 
 export async function getServerSideProps({ query }) {
   console.log("query:", query)
+
+  const pullData = async () => {
+    let command = 'git submodule update --recursive --remote'
+    await exec(command, (error, stdout, stderr) => {
+      console.log('error:', error)
+      console.log('stdout:', stdout)
+      console.log('stderr:', stderr)
+    })
+    return await ProjectsData(query.lang)
+  }
+
+  const projectsData = await pullData()
+
   return {
     props: {
       headerData: HeaderData(query.lang),
       data: HomeData(query.lang),
-      projectsData: await ProjectsData(query.lang),
+      projectsData
     }
   }
 }

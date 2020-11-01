@@ -31,7 +31,7 @@ const Project = ({ headerData, data, content }) => {
 export const getStaticPaths = async () => {
     const files = fs.readdirSync('projects')
     console.log("files:", files)
-    const paths = files.map(filename => ({
+    const paths = files.filter(el => !el.includes('.')).map(filename => ({
         params: {
             project: filename.replace(".md", "")
         }

@@ -2,10 +2,26 @@ import fs from 'fs'
 import matter from 'gray-matter';
 import path from 'path'
 
+/* // git
+import sys from 'sys'
+import { exec } from 'child_process'
+
+const pullData = async () => {
+    let command = 'git submodule update --recursive --remote'
+    await exec(command, (error, stdout, stderr) => {
+        console.log('error:', error)
+        console.log('stdout:', stdout)
+        console.log('stderr:', stderr)
+    })
+} */
+
 const getPaths = async () => {
+    //await pullData()
     const files = fs.readdirSync('projects')
     const paths = files.map(filename => (filename.replace(".md", "")));
-    return paths;
+    const filteredPaths = paths.filter(el => !el.includes("."))
+    console.log('filteredPaths:', filteredPaths)
+    return filteredPaths;
 }
 
 const ProjectData = (lang) => {
