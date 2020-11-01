@@ -1,6 +1,6 @@
-import fs from 'fs'
+/* import fs from 'fs'
 import matter from 'gray-matter';
-import path from 'path'
+import path from 'path' */
 
 /* // git
 import sys from 'sys'
@@ -14,7 +14,7 @@ const pullData = async () => {
         console.log('stderr:', stderr)
     })
 } */
-
+/* 
 const getPaths = async () => {
     //await pullData()
     const files = fs.readdirSync('projects')
@@ -23,10 +23,10 @@ const getPaths = async () => {
     console.log('filteredPaths:', filteredPaths)
     return filteredPaths;
 }
-
+ */
 const ProjectData = (lang) => {
     if (lang === 'es') {
-        return PROJECTS_EN()
+        return PROJECTS_ES()
     }
     else if (lang === 'en') {
         return PROJECTS_EN();
@@ -36,27 +36,26 @@ const ProjectData = (lang) => {
     }
 }
 
-const PROJECTS_EN = async () => {
-    const dataPaths = await getPaths()
+const PROJECTS_EN = () => {
+    /* const dataPaths = await getPaths()
     const projects = dataPaths.map((item) => ({
         title: item,
         img: `/img/projects/${item}.jpg`,
         url: `${item}`,
-    }))
+    })) */
 
     return {
         query: '?lang=en',
         title: 'Last Works:',
-        projects
+        //projects
     }
 }
 
 const PROJECTS_ES = () => {
     return {
         query: '?lang=es',
-        query: '',
         title: 'Ultimos Trabajos:',
-        projects: [
+        /* projects: [
             {
                 title: 'title1',
                 description: 'Minim ullamco mollit enim dolor ut est reprehenderit anim sunt elit veniam officia culpa proident.',
@@ -85,7 +84,7 @@ const PROJECTS_ES = () => {
                 seeMore: 'Show Details'
             }
         ]
-
+ */
     }
 }
 
