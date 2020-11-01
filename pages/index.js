@@ -1,9 +1,13 @@
 import Head from 'next/head'
+import React, { useState, useEffect } from 'react'
+import matter from 'gray-matter'
+import { execSync } from 'child_process'
+import fs from 'fs'
 //DATA
 
 import HomeData from '../data/HomeData'
 import HeaderData from '../data/HeaderData'
-import ProjectsData from '../data/ProjectsData'
+import ProjectData from '../data/ProjectsData'
 
 //COMPONENTES
 
@@ -11,13 +15,32 @@ import Header from '../components/Header'
 import MainSection from '../sections/MainSection'
 import ProjectSection from '../sections/ProjectSection'
 import FooterSection from '../sections/FooterSection'
+import Loader from '../components/Loader'
 
-// GIT
 
-import sys from 'sys'
-import { exec } from 'child_process'
+export default function Home({ finalData }) {
+  const [data, setData] = useState(false)
+  const [projectsData, setProjectsData] = useState(false)
+  const [headerData, setHeaderData] = useState(false)
 
-export default function Home({ headerData, data, projectsData }) {
+  useEffect(() => {
+    if (!projectsData) {
+      const search = location.search.split('=')[1];
+      setProjectsData(search === 'es' ? finalData.es : finalData.en)
+    }
+    if (!data) {
+      const search = location.search.split('=')[1];
+      setData(search === 'es' ? finalData.es : finalData.en)
+    }
+    if (!headerData) {
+      setHeaderData(HeaderData('en'))
+    }
+    console.log(data)
+  }, [projectsData, headerData])
+
+  if (!data || !HeaderData || !projectsData) {
+    return <Loader />
+  }
   return (
     <div>
       <Head>
@@ -33,7 +56,46 @@ export default function Home({ headerData, data, projectsData }) {
   )
 }
 
-export async function getServerSideProps({ query }) {
+export async function getStaticProps({ }) {
+  const esPaths = execSync(`find ./projects/ES -name '*.md'`).toString().split('\n').slice(0, -1)
+  const enPaths = execSync(`find ./projects/EN -name '*.md'`).toString().split('\n').slice(0, -1)
+
+  const esFilesData = []
+  esPaths.forEach(el => {
+    esFilesData.push(matter(fs.readFileSync(el).toString()).data)
+  })
+  const enFilesData = []
+  enPaths.forEach(el => {
+    enFilesData.push(matter(fs.readFileSync(el).toString()).data)
+  })
+
+  const enData = HomeData()
+  const esData = HomeData('es')
+
+  const enProjectsData = ProjectData()
+  const esProjectsData = ProjectData('es')
+
+  let finalData = {
+    en: {
+      ...enProjectsData,
+      ...enData,
+      projects: enFilesData
+    },
+    es: {
+      ...esProjectsData,
+      ...esData,
+      projects: esFilesData
+    }
+  }
+  return {
+    props: {
+      finalData,
+    }
+  }
+
+}
+
+/* export async function getServerSideProps({ query }) {
   console.log("query:", query)
 
   const pullData = async () => {
@@ -55,4 +117,4 @@ export async function getServerSideProps({ query }) {
       projectsData
     }
   }
-}
+} */
