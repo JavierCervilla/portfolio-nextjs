@@ -2,38 +2,42 @@ import React from 'react'
 import fs from 'fs'
 import matter from 'gray-matter';
 import marked from 'marked'
-import path from 'path'
+import { execSync } from 'child_process';
 
 import HeaderData from '../../data/HeaderData'
 import Head from 'next/head'
 import Header from '../../components/Header'
 import FooterSection from '../../sections/FooterSection'
+import Loader from '../../components/Loader';
 
-
-import { Container } from 'react-bootstrap'
-import { execSync } from 'child_process';
+import ReactMarkdown from 'react-markdown'
+import { Container, Row } from 'react-bootstrap'
 
 
 
 const Project = ({ headerData, data, content }) => {
+    if (!data || !headerData) {
+        return <Loader />
+    }
     return (
         <>
             <Head>
                 <title>Javier Cervilla | {data.title} </title>
-
                 <meta name="keywords" content={data.description}></meta>
             </Head>
             <Header data={headerData} />
             <Container className='main-section'>
-                <h1>{data.title.toUpperCase()}</h1>
-                <div dangerouslySetInnerHTML={{ __html: content }} />
+                <h1 >{data.title.toUpperCase()}</h1>
+                <Row><img src={`/img/projects/${data.img}`} style={{ maxWidth: '100%', margin: 'auto' }} alt={data.title}></img></Row>
+                {/* <div dangerouslySetInnerHTML={{ __html: content }} /> */}
+                <ReactMarkdown>{content}</ReactMarkdown>
             </Container>
             <FooterSection />
         </>)
 }
 
 
-/* const pullData = () => {
+const pullData = () => {
     try {
         let command = 'git submodule update --recursive --remote'
         return execSync(command, (error, stdout, stderr) => {
@@ -44,9 +48,11 @@ const Project = ({ headerData, data, content }) => {
     } catch (error) {
         return
     }
-} */
+}
 
 export const getStaticPaths = async () => {
+    pullData()
+
     const esFiles = fs.readdirSync('projects/ES')
     const esPaths = esFiles.map(filename => (filename.replace(".md", "")))
 
@@ -65,15 +71,17 @@ export const getStaticPaths = async () => {
     console.log("paths: ", paths)
     return {
         paths,
-        fallback: false
+        fallback: true
     }
 }
 
 export const getStaticProps = async ({ params: { project } }) => {
-
+    pullData()
 
     let filePath;
     filePath = execSync(`find ./projects -name '${project}.md'`).toString().split('\n')[0].toString()
+    console.log('filePath:\n', filePath)
+    console.log('url:', project)
     const mdMetadata = fs.readFileSync(filePath).toString()
 
     const parsedMd = matter(mdMetadata)
@@ -83,9 +91,10 @@ export const getStaticProps = async ({ params: { project } }) => {
         props: {
             headerData: HeaderData(),
             data: parsedMd.data,
-            content: htmlContent
+            //content: htmlContent
+            content: parsedMd.content
         },
-
+        revalidate: 20
     }
 }
 
