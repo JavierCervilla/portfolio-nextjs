@@ -3,54 +3,37 @@ import matter from 'gray-matter'
 import { execSync } from 'child_process'
 import fs from 'fs'
 
-import HeaderData from '../../data/HeaderData'
 import ProjectData from '../../data/ProjectsData'
 
 
-import Header from '../../components/Header'
-import FooterSection from '../../sections/FooterSection'
-import ProjectSection from '../../sections/ProjectSection'
+import Projects from '../../components/Projects'
 import Loader from '../../components/Loader'
+import MainLayout from '../../layouts/MainLayout'
+import MainSection from '../../sections/MainSection'
 
-const Projects = ({ finalData }) => {
+const ProjectsPage = ({ finalData }) => {
     const [data, setData] = useState(false)
-    const [headerData, setHeaderData] = useState(false)
 
     useEffect(() => {
         if (!data) {
             const search = location.search.split('=')[1];
             setData(search === 'es' ? finalData.es : finalData.en)
         }
-        if (!headerData) {
-            setHeaderData(HeaderData('en'))
-        }
         console.log(data)
-    }, [data, headerData])
+    }, [data])
 
 
-    if (!data || !headerData) {
+    if (!data) {
         return <Loader />
     }
     return (
-        <>
-            <Header data={headerData} />
-
-            {console.log('finalData:', finalData)}
-            <ProjectSection data={data} />
-            <FooterSection />
-        </>
+        <MainLayout>
+            <MainSection>
+                <Projects data={data} className='main-layout' />
+            </MainSection>
+        </MainLayout>
     )
 }
-
-/* export async function getServerSideProps({ query }) {
-    console.log("query:", query)
-    return {
-        props: {
-            headerData: HeaderData(query.lang),
-            data: await ProjectData(query.lang)
-        }
-    }
-} */
 
 const pullData = () => {
     try {
@@ -107,4 +90,4 @@ export async function getStaticProps({ }) {
 }
 
 
-export default Projects
+export default ProjectsPage

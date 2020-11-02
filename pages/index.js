@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import React, { useState, useEffect } from 'react'
 import matter from 'gray-matter'
 import { execSync } from 'child_process'
@@ -6,22 +5,20 @@ import fs from 'fs'
 //DATA
 
 import HomeData from '../data/HomeData'
-import HeaderData from '../data/HeaderData'
 import ProjectData from '../data/ProjectsData'
 
 //COMPONENTES
 
-import Header from '../components/Header'
 import MainSection from '../sections/MainSection'
-import ProjectSection from '../sections/ProjectSection'
-import FooterSection from '../sections/FooterSection'
+import Projects from '../components/Projects'
 import Loader from '../components/Loader'
+import MainLayout from '../layouts/MainLayout'
+import MainCard from '../components/MainCard'
 
 
 export default function Home({ finalData }) {
   const [data, setData] = useState(false)
   const [projectsData, setProjectsData] = useState(false)
-  const [headerData, setHeaderData] = useState(false)
 
   useEffect(() => {
     if (!projectsData) {
@@ -32,27 +29,19 @@ export default function Home({ finalData }) {
       const search = location.search.split('=')[1];
       setData(search === 'es' ? finalData.es : finalData.en)
     }
-    if (!headerData) {
-      setHeaderData(HeaderData('en'))
-    }
     console.log(data)
-  }, [projectsData, headerData])
+  }, [projectsData])
 
-  if (!data || !HeaderData || !projectsData) {
+  if (!data || !projectsData) {
     return <Loader />
   }
   return (
-    <div>
-      <Head>
-        <title>Javier Cervilla | Dev && Prod </title>
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="keywords" content="portfolio, react, nextjs, web, development, money, work, job, js, javascript"></meta>
-      </Head>
-      <Header data={headerData} />
-      <MainSection data={data.mainSection} />
-      <ProjectSection data={projectsData} />
-      <FooterSection />
-    </div>
+    <MainLayout >
+      <MainSection data={data.mainSection} >
+        <MainCard data={data.mainSection} />
+      </MainSection>
+      <Projects data={projectsData} />
+    </MainLayout>
   )
 }
 
@@ -68,7 +57,6 @@ const pullData = () => {
     return
   }
 }
-
 
 
 export async function getStaticProps({ }) {
@@ -111,27 +99,3 @@ export async function getStaticProps({ }) {
   }
 
 }
-
-/* export async function getServerSideProps({ query }) {
-  console.log("query:", query)
-
-  const pullData = async () => {
-    let command = 'git submodule update --recursive --remote'
-    await exec(command, (error, stdout, stderr) => {
-      console.log('error:', error)
-      console.log('stdout:', stdout)
-      console.log('stderr:', stderr)
-    })
-    return await ProjectsData(query.lang)
-  }
-
-  const projectsData = await pullData()
-
-  return {
-    props: {
-      headerData: HeaderData(query.lang),
-      data: HomeData(query.lang),
-      projectsData
-    }
-  }
-} */
