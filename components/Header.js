@@ -8,7 +8,7 @@ const Header = ({ data }) => {
 
     return (
         <header className="custom-header-container">
-            <Link className='header-logo' href="/"><img src="/img/logo.png" unsized='true' alt="" /></Link>
+            <Link className='header-logo' href="/"><a><img src="/img/logo.png" unsized='true' alt="" /></a></Link>
             <nav className={`custom-header ${sidebar && 'sidebarActive'}`}>
                 {sidebar && <Link style={{ transition: '.4s ease' }} href="/"><img className='logo-sidebar' src="/img/logo.png" unsized='true' alt="" /></Link>}
                 {data.links.map((el, index) => (
@@ -26,6 +26,7 @@ const Header = ({ data }) => {
             <button onClick={() => setSidebar(!sidebar)} className="btn-menu">
                 <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 6h-24v-4h24v4zm0 4h-24v4h24v-4zm0 8h-24v4h24v-4z" /></svg>
             </button>
+            <div className={`panel ${sidebar && 'panelActive'}`} onClick={() => setSidebar(false)}></div>
         </header >
     )
 }

@@ -3,15 +3,14 @@ import fs from 'fs'
 import matter from 'gray-matter';
 import marked from 'marked'
 import { execSync } from 'child_process';
+import ReactMarkdown from 'react-markdown'
 
 import HeaderData from '../../data/HeaderData'
-import Head from 'next/head'
-import Header from '../../components/Header'
-import FooterSection from '../../sections/FooterSection'
 import Loader from '../../components/Loader';
 
-import ReactMarkdown from 'react-markdown'
-import { Container, Row } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
+import MainLayout from '../../layouts/MainLayout';
+import MainSection from '../../sections/MainSection';
 
 
 
@@ -20,20 +19,14 @@ const Project = ({ headerData, data, content }) => {
         return <Loader />
     }
     return (
-        <>
-            <Head>
-                <title>Javier Cervilla | {data.title} </title>
-                <meta name="keywords" content={data.description}></meta>
-            </Head>
-            <Header data={headerData} />
-            <Container className='main-section'>
+        <MainLayout title={data.title}>
+            <MainSection>
                 <h1 >{data.title.toUpperCase()}</h1>
                 <Row><img src={`/img/projects/${data.img}`} style={{ maxWidth: '100%', margin: 'auto' }} alt={data.title}></img></Row>
                 {/* <div dangerouslySetInnerHTML={{ __html: content }} /> */}
                 <ReactMarkdown>{content}</ReactMarkdown>
-            </Container>
-            <FooterSection />
-        </>)
+            </MainSection>
+        </MainLayout >)
 }
 
 
