@@ -52,10 +52,28 @@ const Projects = ({ finalData }) => {
     }
 } */
 
+const pullData = () => {
+    try {
+        let command = 'git submodule update --recursive --remote'
+        return execSync(command, (error, stdout, stderr) => {
+            console.log('error:', error)
+            console.log('stdout:', stdout)
+            console.log('stderr:', stderr)
+        })
+    } catch (error) {
+        return
+    }
+}
+
 
 export async function getStaticProps({ }) {
+    pullData()
+
     const esPaths = execSync(`find ./projects/ES -name '*.md'`).toString().split('\n').slice(0, -1)
     const enPaths = execSync(`find ./projects/EN -name '*.md'`).toString().split('\n').slice(0, -1)
+
+    console.log('enPaths:', enPaths)
+    console.log('esPaths:', esPaths)
 
     const esFilesData = []
     esPaths.forEach(el => {
@@ -82,7 +100,8 @@ export async function getStaticProps({ }) {
     return {
         props: {
             finalData,
-        }
+        },
+        revalidate: 20
     }
 
 }
