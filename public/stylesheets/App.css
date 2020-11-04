@@ -10860,7 +10860,7 @@ body, p, button, a, li {
 }
 
 .custom-header-container {
-  position: absolute;
+  position: fixed;
   z-index: 2;
   top: 0;
   right: 0;
@@ -10953,6 +10953,7 @@ body, p, button, a, li {
   .custom-header {
     width: 70vw;
     position: fixed;
+    border-radius: 42px 0 0 42px;
     right: 0;
   }
 }
@@ -11102,7 +11103,7 @@ body, p, button, a, li {
 
 @media (min-width: 1025px) {
   .main-section {
-    margin: 4.5em auto 0 0;
+    margin: 4em auto 0 0;
   }
 }
 
