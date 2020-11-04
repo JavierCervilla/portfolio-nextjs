@@ -22,8 +22,10 @@ const Project = ({ headerData, data, content }) => {
         <MainLayout title={data.title}>
             <MainSection>
                 <h1 >{data.title.toUpperCase()}</h1>
-                <Row><img src={`/img/projects/${data.img}`} style={{ maxWidth: '100%', margin: 'auto' }} alt={data.title}></img></Row>
-                <div dangerouslySetInnerHTML={{ __html: content }} />
+                <Row style={{ marginBottom: '2em' }}><img src={`/img/projects/${data.img}`} style={{ maxWidth: '100%', margin: 'auto' }} alt={data.title}></img></Row>
+                <Row><Col></Col><Col xl={8}>
+                    <div dangerouslySetInnerHTML={{ __html: content }} />
+                </Col><Col></Col></Row>
                 {/* <ReactMarkdown>{content}</ReactMarkdown> */}
             </MainSection>
         </MainLayout >)
