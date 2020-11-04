@@ -37,7 +37,8 @@ const ProjectsPage = ({ finalData }) => {
 
 const pullData = () => {
     try {
-        let command = 'git submodule update --recursive --remote'
+        console.log('entro')
+        let command = 'git submodule update --recursive --remote && cp ./projects/images/*.jpg ./public/img/projects'
         return execSync(command, (error, stdout, stderr) => {
             console.log('error:', error)
             console.log('stdout:', stdout)

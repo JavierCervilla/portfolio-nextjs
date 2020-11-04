@@ -10,9 +10,9 @@ const Projects = ({ data }) => {
                     {data.projects && data.projects.map((project, i) =>
                         (
                             <Col key={`projects-${project}-${i}`} sm={12} md={6} lg={4}>
-                                <Card key={`projects-${project}`} className='bg-primary-custom' style={{ margin: '0.5em', maxWidth: '400px' }}>
+                                <Card className='bg-primary-custom' style={{ margin: '0.5em', maxWidth: '400px' }}>
                                     <Link href={`/project/${project.url}${data.query}`}><a><Image fluid style={{ width: '100%', height: '100%' }} src={`img/projects/${project.img}`} /></a></Link>
-                                    <Link href={`/project/${project.url}${data.query}`}><a><Card.Title>{project.title}</Card.Title></a></Link>
+                                    <Link href={`/project/${project.url}${data.query}`}><a>{project.title}</a></Link>
                                     <Link href={`${project.git}`} >
                                         <a target="_blank" rel="noreferrer">
                                             <p>View on Github <img style={{ margin: '2 em' }} width='20em' src='/git.svg' /></p>

@@ -23,8 +23,8 @@ const Project = ({ headerData, data, content }) => {
             <MainSection>
                 <h1 >{data.title.toUpperCase()}</h1>
                 <Row><img src={`/img/projects/${data.img}`} style={{ maxWidth: '100%', margin: 'auto' }} alt={data.title}></img></Row>
-                {/* <div dangerouslySetInnerHTML={{ __html: content }} /> */}
-                <ReactMarkdown>{content}</ReactMarkdown>
+                <div dangerouslySetInnerHTML={{ __html: content }} />
+                {/* <ReactMarkdown>{content}</ReactMarkdown> */}
             </MainSection>
         </MainLayout >)
 }
@@ -32,7 +32,7 @@ const Project = ({ headerData, data, content }) => {
 
 const pullData = () => {
     try {
-        let command = 'git submodule update --recursive --remote'
+        let command = 'git submodule update --recursive --remote && cp ../../projects/images/*.jpg ../../public/img/projects -y'
         return execSync(command, (error, stdout, stderr) => {
             console.log('error:', error)
             console.log('stdout:', stdout)
@@ -84,8 +84,8 @@ export const getStaticProps = async ({ params: { project } }) => {
         props: {
             headerData: HeaderData(),
             data: parsedMd.data,
-            //content: htmlContent
-            content: parsedMd.content
+            content: htmlContent
+            //content: parsedMd.content
         },
         revalidate: 20
     }

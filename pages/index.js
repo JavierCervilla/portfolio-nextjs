@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import matter from 'gray-matter'
 import { execSync } from 'child_process'
 import fs from 'fs'
@@ -47,7 +47,7 @@ export default function Home({ finalData }) {
 
 const pullData = () => {
   try {
-    let command = 'git submodule update --recursive --remote'
+    let command = 'git submodule update --recursive --remote && cp ../../projects/images/*.jpg ../../public/img/projects -y'
     return execSync(command, (error, stdout, stderr) => {
       console.log('error:', error)
       console.log('stdout:', stdout)
